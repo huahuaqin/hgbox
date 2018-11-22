@@ -11,7 +11,6 @@ class PanelTestCaseChk(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.init_ui()
 
-
     def init_ui(self):
         self.txt_ver = wx.StaticText(self, -1, label=u'版本号', pos=(10, 10))
         self.in_ver = wx.TextCtrl(self, -1, size=(300, -1), pos=(100, 10))
