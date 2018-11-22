@@ -4,7 +4,7 @@ from jira import JIRA,exceptions
 import os
 import configparser
 import xlrd
-import
+from execptions import JiraException
 
 
 class JiraExtend(object):
@@ -25,11 +25,9 @@ class JiraExtend(object):
         :return:
         """
         try:
-            return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=1, timeout=1)
-        except exceptions.JIRAError, e:
-            raise
-        except ConnectTimeout, e:
-            print u'登陆jira超时'
+            return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=1)
+        except Exception, e:
+            raise JiraException(e)
 
     def cfg_parser(self, section, option, cfg_file=None):
         """
