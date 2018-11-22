@@ -12,12 +12,18 @@ class JiraExtend(object):
     """
     def __init__(self, *args, **kw):
         self._cfg_file = 'config.ini'
-        self._user = self.cfg_parser('JIRA_INFO', 'user')
-        self._password = self.cfg_parser('JIRA_INFO', 'password')
+        self._user = self.cfg_parser('JIRA_INFO', 'jira_user')
+        self._password = self.cfg_parser('JIRA_INFO', 'jira_pwd')
         self._jira_server = self.cfg_parser('JIRA_INFO', 'jira_server')
-        self._version = args[0]
-        self._case_dir = args[1]
-        self._jira = JIRA(self._jira_server, basic_auth=(self._user, self._password))
+        self._jira_prj = self.cfg_parser('JIRA_INFO', 'jira_prj')
+        self._jira = self.login_jira()
+
+    def login_jira(self):
+        """
+
+        :return:
+        """
+        return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=1)
 
     def cfg_parser(self, section, option, cfg_file=None):
         """
@@ -34,7 +40,7 @@ class JiraExtend(object):
         cfg_handle.read(cfg_file)
         return cfg_handle.get(section, option)
 
-    def check_case_coverage(self):
+    def check_case_coverage(self, version, case_dir):
         """
         检查用例覆盖情况
         :return:
@@ -45,15 +51,15 @@ class JiraExtend(object):
         result = ''
 
         # 获取具体版本下的jira号
-        content = self._jira.search_issues('project = OTC AND issuetype = Story AND fixVersion = '+self._version+''.decode('gbk'),maxResults=200)
+        content = self._jira.search_issues('project = OTC AND issuetype = Story AND fixVersion = '+version+''.decode('gbk'),maxResults=200)
         for issue in content:
             jirakeys.append([issue.key, issue.fields.subtasks])
 
         # 获取目录下excel用例中的jira号，只支持最新标准的用例模板
-        files = os.listdir(self._case_dir)
+        files = os.listdir(case_dir)
         jiracol = 1
         for f in files:
-            data = xlrd.open_workbook(self._case_dir +'\\'+f)
+            data = xlrd.open_workbook(case_dir +'\\'+f)
             sheet_count = len(data.sheets())
             for sheet,i in zip(data.sheets(),range(sheet_count)):
                 table = data.sheets()[i]
@@ -112,6 +118,11 @@ class JiraExtend(object):
                 sub_task_ver = subcontent[0].fields.fixVersions[0].name
                 if sub_task_ver != self._version:
                     print subcontent[0].key
+
+    def version_exist(self, version, project=None):
+        prj = self._jira_prj if project is None else project
+        vers = self._jira.project_versions(prj)
+        return version in [v.name for v in vers]
 
 if __name__ == '__main__':
     jre = JiraExtend()
