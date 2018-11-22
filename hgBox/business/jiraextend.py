@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from jira import JIRA
+from jira import JIRA,exceptions
 import os
 import configparser
 import xlrd
@@ -23,7 +23,11 @@ class JiraExtend(object):
 
         :return:
         """
-        return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=1)
+        try:
+            JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=1)
+        except Exception,exceptions.JIRAError:
+            return None
+
 
     def cfg_parser(self, section, option, cfg_file=None):
         """
