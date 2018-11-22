@@ -1,0 +1,2 @@
+from panelsetting import PanelSetting
+from paneltestcasechk import PanelTestCaseChk

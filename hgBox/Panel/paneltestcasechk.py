@@ -2,18 +2,17 @@
 
 import os
 from threading import Thread
-
 import wx
-
-from business.jiraextend import JiraExtend
+from business import *
 
 
 class PanelTestCaseChk(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
-        self.InitUI()
+        self.init_ui()
 
-    def InitUI(self):
+
+    def init_ui(self):
         self.txt_ver = wx.StaticText(self, -1, label=u'版本号', pos=(10, 10))
         self.in_ver = wx.TextCtrl(self, -1, size=(300, -1), pos=(100, 10))
         self.txt_case_path = wx.StaticText(self, -1, label=u'用例目录', pos=(10, 50))
@@ -33,17 +32,36 @@ class PanelTestCaseChk(wx.Panel):
     def on_btn_chk_test(self, event):
         self.txt_result.SetValue(u'处理中...')
         self.btn_chk_test.Disable()
+        if not self._get_value():
+            self.btn_chk_test.Enable()
+            self.txt_result.SetValue(u'')
+            return
+        version, case_path = self._get_value()
         t = Thread(target=self.chk_test, args=(version, case_path,))
         t.start()
 
     def chk_test(self, *args):
-        je = JiraExtend(*args)
-        result = je.check_case_coverage()
-        self.txt_result.SetValue(result)
+        try:
+            je= JiraExtend()
+            result = je.check_case_coverage(*args)
+            self.txt_result.SetValue(result)
+        except Exception, e:
+            dlg = wx.MessageDialog(self, str(e), style = wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            self.txt_result.SetValue(u'')
         self.btn_chk_test.Enable()
 
     def _get_value(self):
+        je= JiraExtend()
         version = self.in_ver.GetValue()
         case_path = self.in_path.GetValue()
         if not os.path.isdir(case_path):
-            wx.MessageDialog(self, u'测试路径无效',style = wx.OK | wx.ICON_ERROR)
+            dlg = wx.MessageDialog(self, u'测试路径无效',style = wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            return
+        if not je.version_exist(version):
+            dlg = wx.MessageDialog(self, u'版本在jira中不存在',style = wx.OK | wx.ICON_ERROR)
+            dlg.ShowModal()
+            return
+        return version,case_path
+
