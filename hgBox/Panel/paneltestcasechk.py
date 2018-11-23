@@ -14,6 +14,7 @@ def wrap_exception(func):
             # print str(e)
             dlg = wx.MessageDialog(self, str(e), style=wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
+            self.roll_back()
     return wrapper
 
 
@@ -42,8 +43,7 @@ class PanelTestCaseChk(wx.Panel):
     def on_btn_chk_test(self, event):
         self.btn_chk_test.Disable()
         if not self._get_value():
-            self.btn_chk_test.Enable()
-            self.txt_result.SetValue(u'')
+            self.roll_back()
             return
         version, case_path = self._get_value()
         self.txt_result.SetValue(u'处理中...')
@@ -63,12 +63,16 @@ class PanelTestCaseChk(wx.Panel):
         version = self.in_ver.GetValue()
         case_path = self.in_path.GetValue()
         if not os.path.isdir(case_path):
-            dlg = wx.MessageDialog(self, u'测试路径无效',style = wx.OK | wx.ICON_ERROR)
+            dlg = wx.MessageDialog(self, u'用例目录无效',style = wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             return
         if not je.version_exist(version):
-            dlg = wx.MessageDialog(self, u'版本在jira中不存在',style = wx.OK | wx.ICON_ERROR)
+            dlg = wx.MessageDialog(self, u'版本[%s]在jira中不存在'%version,style = wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             return
-        return version,case_path
+        return version, case_path
+
+    def roll_back(self):
+        self.btn_chk_test.Enable()
+        self.txt_result.SetValue(u'')
 
