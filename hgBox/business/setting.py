@@ -2,6 +2,7 @@
 
 from configparser import ConfigParser
 import os
+from execptions import SettingException
 
 CFG_PATH = r'config.ini'
 ATTR = {'JIRA_INFO': {'jira_server': '',
@@ -11,8 +12,9 @@ ATTR = {'JIRA_INFO': {'jira_server': '',
         }
 
 
-class Setting(object):
+class Setting(dict):
     def __init__(self):
+        dict.__init__(self)
         self.cfg = ConfigParser()
         self.init()
         self.cfg.read(CFG_PATH)
@@ -55,9 +57,26 @@ class Setting(object):
         a = self.cfg.get(sec, opt)
         return a
 
+    def __getitem__(self, key):
+        """
+
+        :param key:
+        :return:
+        """
+        try:
+            return self.cfg[key]
+        except KeyError:
+            raise SettingException(key)
+
+
 if __name__ == '__main__':
+    '''
     sett = Setting()
     cfg = ConfigParser()
     cfg.read(CFG_PATH)
-    print cfg.get('JIRA_INFO','jira_pwd')
+    print sett['JIRA_INFO']['jira_pwt']
+    '''
+    case_dir= r'D:\pyproject\git\hgbox\hgBox'
+    files = [f for f in os.listdir(case_dir) if os.path.isfile(os.path.join(case_dir,f))] #and f.split('.')[1] in ('py', 'xlsx'))]
 
+    print files
