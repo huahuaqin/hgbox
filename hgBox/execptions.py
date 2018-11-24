@@ -10,7 +10,7 @@ class JiraException(Exception):
         self.e = e
 
     def __str__(self):
-        err_msg = str('未知异常')
+        err_msg = str(self.e)
         if isinstance(self.e, ConnectTimeout):
             err_msg = str('登陆JIRA超时;请确认地址正确/网络正常！')
         if isinstance(self.e, JIRAError):

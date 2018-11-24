@@ -5,10 +5,10 @@ import os
 from execptions import SettingException
 
 CFG_PATH = r'config.ini'
-ATTR = {'JIRA_INFO': {'jira_server': '',
+ATTR = {'JIRA_INFO': {'jira_server': 'http://192.168.0.221:8080',
                       'jira_user': '',
                       'jira_pwd': '',
-                      'jira_prj': ''},
+                      'jira_prj': 'OTC'},
         }
 
 

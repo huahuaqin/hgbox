@@ -26,6 +26,8 @@ class JiraExtend(object):
         :return:
         """
         try:
+            if not (self._jira_server and self._user and self._password and self._jira_prj):
+                raise Exception('jira 参数信息不全，请先进行参数设置并进行验证')
             return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=2)
         except Exception, e:
             raise JiraException(e)
