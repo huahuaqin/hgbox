@@ -43,21 +43,12 @@ class JiraExtend(object):
 
         # 获取具体版本下的jira号
         story_issues = self.version_related_story_issue(self._jira_prj, version)
-        '''
-        for issue in content:
-            jirakeys.append([issue.key, issue.fields.subtasks])
-        '''
         jirakeys = ([issue.key, issue.fields.subtasks] for issue in story_issues)
-
         # 获取目录下excel用例中的jira号，只支持最新标准的用例模板
         files = [os.path.join(case_dir, f) for f in os.listdir(case_dir) if \
                  (os.path.isfile(os.path.join(case_dir, f)) and f.split('.')[-1] in ('xls', 'xlsx'))]
-        '''
-        files = [os.path.join(root, f) for(root, dir, files) in os.walk(case_dir) \
-                 for f in files if f.split('.')[1] in ('xls', 'xlsx')]
-        '''
         for f in files:
-            data = xlrd.open_workbook(f)  # (case_dir +'\\'+f)
+            data = xlrd.open_workbook(f)
             sheets = data.sheets()
             for sheet in sheets:
                 table = sheet
@@ -73,7 +64,6 @@ class JiraExtend(object):
                     cell_value = table.cell(row, jiracol).value
                     if cell_value not in testcasejiras:
                         testcasejiras.append(cell_value)
-
         # 检查没有用例覆盖的需求号
         for jirakey in jirakeys:
             for testcasejira in testcasejiras:
@@ -84,16 +74,17 @@ class JiraExtend(object):
 
         # 输出结果
         if len(uncoverjiras) > 0:
-            result = u'测试用例未覆盖的需求数:%d\r\n 测试用例未覆盖的jira如下：\r\n' %len(uncoverjiras)
+            result = u'测试用例未覆盖的需求数:%d\r\n测试用例未覆盖的jira如下：\r\n' %len(uncoverjiras)
             for uncoverjira in uncoverjiras:
-                testers = ''
+                testers = u''
                 for subtask in uncoverjira[1]:
                     subcontent = self._jira.search_issues('project=%s AND key=%s' % (self._jira_prj, str(subtask)))
                     for subissue in subcontent:
-                        if 'Test' in str(subissue.fields.customfield_10211):
-                            if str(subissue.fields.assignee) not in testers:
-                                testers = testers + ' ' + str(subissue.fields.assignee)
-                result = result+(uncoverjira[0] + ' '+testers+'\r\n')
+                        if u'Test' in subissue.fields.customfield_10211.value:
+                            if subissue.fields.assignee.key not in testers:
+                                testers = '%s %s' % (testers, subissue.fields.assignee.key)
+                result = '%s%s %s\r\n' % (result, uncoverjira[0], testers)
+                print result
         else:
             result = u'测试用例已全部覆盖jira需求'
 

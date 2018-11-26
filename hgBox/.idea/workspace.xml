@@ -18,7 +18,7 @@
     <SUITE FILE_PATH="coverage/hgBox$setting.coverage" NAME="setting Coverage Results" MODIFIED="1543035077473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/business" />
     <SUITE FILE_PATH="coverage/hgBox$errcodecheck.coverage" NAME="errcodecheck Coverage Results" MODIFIED="1541151181524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hgBox$exec_cmd.coverage" NAME="exec_cmd Coverage Results" MODIFIED="1540719917424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/hgBox$gui.coverage" NAME="gui Coverage Results" MODIFIED="1543220795852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/hgBox$gui.coverage" NAME="gui Coverage Results" MODIFIED="1543226822318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hgBox$test.coverage" NAME="test Coverage Results" MODIFIED="1541152368462" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hgBox$jiraextend.coverage" NAME="jiraextend Coverage Results" MODIFIED="1542613749930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hgBox$jiraextend__1_.coverage" NAME="jiraextend (1) Coverage Results" MODIFIED="1543210222900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/business" />
@@ -33,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="jiraextend.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="jiraextend.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/business/jiraextend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="26.857143">
-              <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
+            <state vertical-scroll-proportion="3.6015425">
+              <caret line="84" column="62" selection-start-line="84" selection-start-column="62" selection-end-line="84" selection-end-column="62" />
               <folding>
                 <element signature="e#24#45#0" expanded="true" />
               </folding>
@@ -48,7 +48,7 @@
       <file leaf-file-name="execptions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/execptions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.178572">
+            <state vertical-scroll-proportion="-7.071429">
               <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
               <folding>
                 <element signature="e#24#61#0" expanded="true" />
@@ -69,11 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="panelsetting.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="panelsetting.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Panel/panelsetting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6606684">
-              <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+            <state vertical-scroll-proportion="-62.07143">
+              <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
               <folding>
                 <element signature="e#23#32#0" expanded="true" />
               </folding>
@@ -84,7 +84,7 @@
       <file leaf-file-name="setting.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/business/setting.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.142857">
+            <state vertical-scroll-proportion="-5.5">
               <caret line="7" column="63" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="63" />
               <folding>
                 <element signature="e#24#61#0" expanded="true" />
@@ -96,8 +96,8 @@
       <file leaf-file-name="paneltestcasechk.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Panel/paneltestcasechk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="26.178572">
-              <caret line="129" column="20" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
+            <state vertical-scroll-proportion="-30.392857">
+              <caret line="136" column="43" selection-start-line="136" selection-start-column="43" selection-end-line="136" selection-end-column="43" />
               <folding>
                 <element signature="e#24#33#0" expanded="true" />
               </folding>
@@ -131,11 +131,11 @@
         <option value="$PROJECT_DIR$/business/bizexecption.py" />
         <option value="$PROJECT_DIR$/business/setting.py" />
         <option value="$PROJECT_DIR$/gui.py" />
-        <option value="$PROJECT_DIR$/Panel/paneltestcasechk.py" />
         <option value="C:/Python27/Lib/site-packages/jira/resilientsession.py" />
-        <option value="$PROJECT_DIR$/business/jiraextend.py" />
         <option value="$PROJECT_DIR$/Panel/panelsetting.py" />
         <option value="$PROJECT_DIR$/execptions.py" />
+        <option value="$PROJECT_DIR$/business/jiraextend.py" />
+        <option value="$PROJECT_DIR$/Panel/paneltestcasechk.py" />
       </list>
     </option>
   </component>
@@ -549,7 +549,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18147014" sideWeight="0.48576215" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="版本控制" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37080538" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49328858" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -599,7 +599,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="78" />
+      <option name="time" value="81" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -993,46 +993,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/business/setting.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.142857">
-          <caret line="7" column="63" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="63" />
-          <folding>
-            <element signature="e#24#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Panel/paneltestcasechk.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="26.178572">
-          <caret line="129" column="20" selection-start-line="129" selection-start-column="20" selection-end-line="129" selection-end-column="20" />
-          <folding>
-            <element signature="e#24#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/business/jiraextend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="26.857143">
-          <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
-          <folding>
-            <element signature="e#24#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/execptions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.178572">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-          <folding>
-            <element signature="e#24#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.5357143">
@@ -1043,12 +1003,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/business/setting.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.5">
+          <caret line="7" column="63" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="63" />
+          <folding>
+            <element signature="e#24#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/execptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.071429">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+          <folding>
+            <element signature="e#24#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Panel/panelsetting.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6606684">
-          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+        <state vertical-scroll-proportion="-62.07143">
+          <caret line="79" column="16" selection-start-line="79" selection-start-column="16" selection-end-line="79" selection-end-column="16" />
           <folding>
             <element signature="e#23#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Panel/paneltestcasechk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-30.392857">
+          <caret line="136" column="43" selection-start-line="136" selection-start-column="43" selection-end-line="136" selection-end-column="43" />
+          <folding>
+            <element signature="e#24#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/business/jiraextend.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.6015425">
+          <caret line="84" column="62" selection-start-line="84" selection-start-column="62" selection-end-line="84" selection-end-column="62" />
+          <folding>
+            <element signature="e#24#45#0" expanded="true" />
           </folding>
         </state>
       </provider>

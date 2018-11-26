@@ -16,7 +16,6 @@ def wrap_exception(func):
         try:
             return func(self, *arg, **kw)
         except Exception, e:
-            # print str(e)
             dlg = wx.MessageDialog(self, str(e), style=wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             self.roll_back()
@@ -134,7 +133,9 @@ class PanelTestCaseChk(wx.Panel):
             self.roll_back()
             return
         version, case_path = self._get_value()
-        pass
+        # -------
+        dlg = wx.MessageDialog(self, u'开发中', style = wx.OK | wx.ICON_ERROR)
+        dlg.ShowModal()
         self.txt_result.SetValue('')
         self._enable_btn()
 
