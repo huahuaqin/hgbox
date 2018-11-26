@@ -2,6 +2,7 @@
 import wx
 from business import *
 
+
 class PanelSetting(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -53,6 +54,14 @@ class PanelSetting(wx.Panel):
         :param event:
         :return:
         """
+        self._save()
+        wx.MessageBox(u'修改成功', u'' ,wx.OK | wx.ICON_INFORMATION)
+
+    def _save(self):
+        """
+
+        :return:
+        """
         jira_server = self.in_jira_server.GetValue()
         user = self.in_jira_user.GetValue()
         pwd = self.in_jira_pwd.GetValue()
@@ -64,7 +73,6 @@ class PanelSetting(wx.Panel):
             ['JIRA_INFO', 'jira_prj', prj],
         )
         self.sett.upd(upd_info)
-        wx.MessageBox(u'修改成功', u'' ,wx.OK | wx.ICON_INFORMATION)
 
     def on_btn_jira_login_chk(self, event):
         """
@@ -72,6 +80,7 @@ class PanelSetting(wx.Panel):
         :return:
         """
         try:
+            self._save()
             JiraExtend()
             dlg = wx.MessageDialog(self, u'登陆成功', style=wx.OK | wx.ICON_INFORMATION)
             dlg.ShowModal()

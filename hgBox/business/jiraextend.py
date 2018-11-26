@@ -27,7 +27,7 @@ class JiraExtend(object):
         """
         try:
             if not (self._jira_server and self._user and self._password and self._jira_prj):
-                raise Exception('jira 参数信息不全，请先进行参数设置并进行验证')
+                raise JiraException(str('jira 参数信息不全，请先进行参数设置并进行验证'))
             return JIRA(self._jira_server, basic_auth=(self._user, self._password), max_retries=0, timeout=2)
         except Exception, e:
             raise JiraException(e)
@@ -50,8 +50,8 @@ class JiraExtend(object):
         jirakeys = ([issue.key, issue.fields.subtasks] for issue in story_issues)
 
         # 获取目录下excel用例中的jira号，只支持最新标准的用例模板
-        files = [f for f in os.listdir(case_dir) if \
-                 (os.path.isfile(os.path.join(case_dir, f)) and f.split('.')[1] in ('xls', 'xlsx'))]
+        files = [os.path.join(case_dir, f) for f in os.listdir(case_dir) if \
+                 (os.path.isfile(os.path.join(case_dir, f)) and f.split('.')[-1] in ('xls', 'xlsx'))]
         '''
         files = [os.path.join(root, f) for(root, dir, files) in os.walk(case_dir) \
                  for f in files if f.split('.')[1] in ('xls', 'xlsx')]
@@ -134,3 +134,4 @@ class JiraExtend(object):
 if __name__ == '__main__':
     jre = JiraExtend()
     jre.sync_sub_pjoect()
+

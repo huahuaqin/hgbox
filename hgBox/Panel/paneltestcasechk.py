@@ -116,6 +116,7 @@ class PanelTestCaseChk(wx.Panel):
         :return:
         """
         if not self._get_value():
+            self.roll_back()
             return
         version, case_path = self._get_value()
         je = JiraExtend()
@@ -130,6 +131,7 @@ class PanelTestCaseChk(wx.Panel):
         :return:
         """
         if not self._get_value():
+            self.roll_back()
             return
         version, case_path = self._get_value()
         pass
@@ -143,6 +145,7 @@ class PanelTestCaseChk(wx.Panel):
         :return:
         """
         if not self._get_value():
+            self.roll_back()
             return
         version, case_path = self._get_value()
         je = JiraExtend()
