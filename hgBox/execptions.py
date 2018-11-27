@@ -19,7 +19,7 @@ class JiraException(Exception):
         else:
             try:
                 err_msg = str(self.e)
-            except :
+            except:
                 err_msg = '未知错误'
         return err_msg
 

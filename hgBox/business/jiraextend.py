@@ -37,40 +37,7 @@ class JiraExtend(object):
         检查用例覆盖情况
         :return:
         """
-        testcasejiras = []
-        uncoverjiras = []
-        result = ''
-
-        # 获取具体版本下的jira号
-        story_issues = self.version_related_story_issue(self._jira_prj, version)
-        jirakeys = ([issue.key, issue.fields.subtasks] for issue in story_issues)
-        # 获取目录下excel用例中的jira号，只支持最新标准的用例模板
-        files = [os.path.join(case_dir, f) for f in os.listdir(case_dir) if \
-                 (os.path.isfile(os.path.join(case_dir, f)) and f.split('.')[-1] in ('xls', 'xlsx'))]
-        for f in files:
-            data = xlrd.open_workbook(f)
-            sheets = data.sheets()
-            for sheet in sheets:
-                table = sheet
-                nrows = table.nrows
-                # 从第一行的名称获取'需求编号'所在的列
-                for cl in range(table.ncols):
-                    if table.cell(0, cl).value == u'需求编号':
-                        jiracol = cl
-                        break
-                else:
-                    continue
-                for row in range(1, nrows):
-                    cell_value = table.cell(row, jiracol).value
-                    if cell_value not in testcasejiras:
-                        testcasejiras.append(cell_value)
-        # 检查没有用例覆盖的需求号
-        for jirakey in jirakeys:
-            for testcasejira in testcasejiras:
-                if jirakey[0] in testcasejira:
-                    break
-            else:
-                uncoverjiras.append(jirakey)
+        uncoverjiras = self.jira_uncover_case(version, case_dir, u'需求编号')
 
         # 输出结果
         if len(uncoverjiras) > 0:
@@ -87,7 +54,32 @@ class JiraExtend(object):
                 print result
         else:
             result = u'测试用例已全部覆盖jira需求'
+        return result
 
+    def check_unit_case_coverage(self, version, case_dir):
+        """
+        检查开发单元测试用例
+        :param version:
+        :param case_dir:
+        :return:
+        """
+        uncoverjiras = self.jira_uncover_case(version, case_dir, u'JIRA号')
+
+        # 输出结果
+        if len(uncoverjiras) > 0:
+            result = u'单元测试用例未覆盖的需求数:%d\r\n未覆盖的jira如下：\r\n' %len(uncoverjiras)
+            for uncoverjira in uncoverjiras:
+                testers = u''
+                for subtask in uncoverjira[1]:
+                    subcontent = self._jira.search_issues('project=%s AND key=%s' % (self._jira_prj, str(subtask)))
+                    for subissue in subcontent:
+                        if u'Development' in subissue.fields.customfield_10211.value:
+                            if subissue.fields.assignee.key not in testers:
+                                testers = '%s %s' % (testers, subissue.fields.assignee.key)
+                result = '%s%s %s\r\n' % (result, uncoverjira[0], testers)
+                print result
+        else:
+            result = u'单元测试已全部覆盖jira需求'
         return result
 
     def sub_task_sync_version(self, version):
@@ -105,9 +97,15 @@ class JiraExtend(object):
                 sub_task_ver = sub_content[0].fields.fixVersions[0].name
                 if sub_task_ver != version:
                     ret_list.append(issue)
-        return ret_list
+        return [i for i in set(ret_list)]
 
     def version_exist(self, version, project=None):
+        """
+        检查某个项目下是否存在特定版本
+        :param version:
+        :param project:
+        :return:
+        """
         prj = self._jira_prj if project is None else project
         vers = self._jira.project_versions(prj)
         return version in [v.name for v in vers]
@@ -121,6 +119,50 @@ class JiraExtend(object):
         """
         return self._jira.search_issues('project = %s AND issuetype = Story AND fixVersion =%s ' % (project, version),\
                                         maxResults=200)
+
+    def jira_uncover_case(self, version, case_dir, col_name):
+        """
+        获取版本下没有测试用例的所有jira
+        :param version:
+        :param case_dir:
+        :param col_name:
+        :return:
+        """
+        testcasejiras = []
+        uncoverjiras = []
+
+        # 获取具体版本下的jira号
+        story_issues = self.version_related_story_issue(self._jira_prj, version)
+        jirakeys = ([issue.key, issue.fields.subtasks] for issue in story_issues)
+        # 获取目录下excel用例中的jira号，只支持最新标准的用例模板
+        files = [os.path.join(case_dir, f) for f in os.listdir(case_dir) if \
+                 (os.path.isfile(os.path.join(case_dir, f)) and f.split('.')[-1] in ('xls', 'xlsx'))]
+        for f in files:
+            data = xlrd.open_workbook(f)
+            sheets = data.sheets()
+            for sheet in sheets:
+                table = sheet
+                nrows = table.nrows
+                # 从第一行的名称获取'需求编号'所在的列
+                for cl in range(table.ncols):
+                    if table.cell(0, cl).value == col_name:
+                        jiracol = cl
+                        break
+                else:
+                    continue
+                for row in range(1, nrows):
+                    cell_value = table.cell(row, jiracol).value
+                    if cell_value not in testcasejiras:
+                        testcasejiras.append(cell_value)
+        # 检查没有用例覆盖的需求号
+        for jirakey in jirakeys:
+            for testcasejira in testcasejiras:
+                if jirakey[0] in testcasejira:
+                    break
+            else:
+                uncoverjiras.append(jirakey)
+        return uncoverjiras
+
 
 if __name__ == '__main__':
     jre = JiraExtend()

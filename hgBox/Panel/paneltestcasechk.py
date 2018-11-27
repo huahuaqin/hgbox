@@ -133,10 +133,9 @@ class PanelTestCaseChk(wx.Panel):
             self.roll_back()
             return
         version, case_path = self._get_value()
-        # -------
-        dlg = wx.MessageDialog(self, u'开发中', style = wx.OK | wx.ICON_ERROR)
-        dlg.ShowModal()
-        self.txt_result.SetValue('')
+        je = JiraExtend()
+        result = je.check_unit_case_coverage(version, case_path)
+        self.txt_result.SetValue(result)
         self._enable_btn()
 
     @wrap_exception
@@ -145,10 +144,10 @@ class PanelTestCaseChk(wx.Panel):
         子任务版本检查处理函数
         :return:
         """
-        if not self._get_value():
+        if not self._get_value(0b01):
             self.roll_back()
             return
-        version, case_path = self._get_value()
+        version, case_path = self._get_value(0b01)
         je = JiraExtend()
         ret = je.sub_task_sync_version(version)
         if not ret:
@@ -162,19 +161,20 @@ class PanelTestCaseChk(wx.Panel):
         self._enable_btn()
 
     @wrap_exception
-    def _get_value(self):
+    def _get_value(self, chk_flag=0b11):
         """
         获取用户输入
+        :param chk_flag: 输入框检查标志
         :return:
         """
         je = JiraExtend()
         version = self.in_ver.GetValue()
         case_path = self.in_path.GetValue()
-        if not os.path.isdir(case_path):
+        if (chk_flag & 0b10) == 2 and not os.path.isdir(case_path) :
             dlg = wx.MessageDialog(self, u'用例目录无效', style = wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             return
-        if not je.version_exist(version):
+        if not (je.version_exist(version) and (chk_flag & 0b01) == 1):
             dlg = wx.MessageDialog(self, u'版本[%s]在jira中不存在' % version, style = wx.OK | wx.ICON_ERROR)
             dlg.ShowModal()
             return

@@ -76,7 +76,5 @@ if __name__ == '__main__':
     cfg.read(CFG_PATH)
     print sett['JIRA_INFO']['jira_pwt']
     '''
-    case_dir= r'D:\pyproject\git\hgbox\hgBox'
-    files = [f for f in os.listdir(case_dir) if os.path.isfile(os.path.join(case_dir,f))] #and f.split('.')[1] in ('py', 'xlsx'))]
-
-    print files
+    a= 0b111
+    print a>>2
