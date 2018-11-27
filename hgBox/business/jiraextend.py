@@ -93,10 +93,13 @@ class JiraExtend(object):
 
         for issue in story_issues:
             for sub_task in issue.fields.subtasks:
-                sub_content = self._jira.search_issues('project=%s AND issue=%s' % (self._jira_prj, str(sub_task)))
-                sub_task_ver = sub_content[0].fields.fixVersions[0].name
-                if sub_task_ver != version:
-                    ret_list.append(issue)
+                try:
+                    sub_content = self._jira.search_issues('project=%s AND issue=%s' % (self._jira_prj, str(sub_task)))
+                    sub_task_ver = sub_content[0].fields.fixVersions
+                    if version not in [stv.name for stv in sub_task_ver]:
+                        ret_list.append(issue)
+                except Exception, e:
+                    raise Exception('jira[%s]-subtask[%s]：%s' % (str(issue.key), str(sub_task.key),str(e)))
         return [i for i in set(ret_list)]
 
     def version_exist(self, version, project=None):
