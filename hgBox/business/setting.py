@@ -76,5 +76,3 @@ if __name__ == '__main__':
     cfg.read(CFG_PATH)
     print sett['JIRA_INFO']['jira_pwt']
     '''
-    a= 0b111
-    print a>>2

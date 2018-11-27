@@ -77,7 +77,6 @@ class JiraExtend(object):
                             if subissue.fields.assignee.key not in testers:
                                 testers = '%s %s' % (testers, subissue.fields.assignee.key)
                 result = '%s%s %s\r\n' % (result, uncoverjira[0], testers)
-                print result
         else:
             result = u'单元测试已全部覆盖jira需求'
         return result
@@ -92,6 +91,8 @@ class JiraExtend(object):
         story_issues = self.version_related_story_issue(self._jira_prj, version)
 
         for issue in story_issues:
+            if not issue.fields.subtasks:
+                ret_list.append(issue)
             for sub_task in issue.fields.subtasks:
                 try:
                     sub_content = self._jira.search_issues('project=%s AND issue=%s' % (self._jira_prj, str(sub_task)))
