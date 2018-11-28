@@ -16,9 +16,11 @@ class JiraException(Exception):
         elif isinstance(self.e, JIRAError):
             if self.e.status_code == 401:
                 err_msg = 'JIRA用户名/密码错误！'
+            else:
+                err_msg = self.e.text.encode('utf-8')
         else:
             try:
-                err_msg = str(self.e)
+                err_msg = str(self.e).encode('utf-8')
             except:
                 err_msg = '未知错误'
         return err_msg

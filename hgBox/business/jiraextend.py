@@ -1,11 +1,26 @@
 # -*- coding:utf-8 -*-
 
 from jira import JIRA
+from jira.exceptions import JIRAError
 import os
 import configparser
 import xlrd
 from execptions import JiraException
 from setting import Setting
+
+
+def wrap_exception(func):
+    """
+    装饰器，异常时弹出框显示异常信息
+    :param func:
+    :return:
+    """
+    def wrapper(self, *arg, **kw):
+        try:
+            return func(self, *arg, **kw)
+        except Exception,e:
+            raise JiraException(e)
+    return wrapper
 
 
 class JiraExtend(object):
@@ -103,6 +118,7 @@ class JiraExtend(object):
                     raise Exception('jira[%s]-subtask[%s]：%s' % (str(issue.key), str(sub_task.key),str(e)))
         return [i for i in set(ret_list)]
 
+    @wrap_exception
     def version_exist(self, version, project=None):
         """
         检查某个项目下是否存在特定版本
