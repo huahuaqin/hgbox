@@ -20,7 +20,7 @@ class JiraException(Exception):
                 err_msg = self.e.text.encode('utf-8')
         else:
             try:
-                err_msg = str(self.e).encode('utf-8')
+                err_msg = str(self.e)
             except:
                 err_msg = '未知错误'
         return err_msg

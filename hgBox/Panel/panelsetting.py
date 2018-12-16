@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 import wx
+from basepanel import BasePanel
 from business import *
 
 
-class PanelSetting(wx.Panel):
+class PanelSetting(BasePanel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        BasePanel.__init__(self, parent)
         self.sett = Setting()
         self.init_ui()
         self.init()
@@ -36,7 +37,6 @@ class PanelSetting(wx.Panel):
         # jira登陆验证
         self.btn_jira_login_chk = wx.Button(self, -1, label=u'jira登陆验证', pos=(300, 300))
         self.Bind(wx.EVT_BUTTON, self.on_btn_jira_login_chk, self.btn_jira_login_chk)
-
 
     def init(self):
         jira_server = self.sett.get_value('JIRA_INFO', 'jira_server')

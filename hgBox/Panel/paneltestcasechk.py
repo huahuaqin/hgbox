@@ -3,28 +3,14 @@
 import os
 from threading import Thread
 import wx
+from basepanel import BasePanel
 from business import *
+from lib import wrap_wx_msg_exception as wrap_exception
 
 
-def wrap_exception(func):
-    """
-    装饰器，异常时弹出框显示异常信息
-    :param func:
-    :return:
-    """
-    def wrapper(self, *arg, **kw):
-        try:
-            return func(self, *arg, **kw)
-        except Exception, e:
-            dlg = wx.MessageDialog(self, str(e), style=wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            self.roll_back()
-    return wrapper
-
-
-class PanelTestCaseChk(wx.Panel):
+class PanelTestCaseChk(BasePanel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        BasePanel.__init__(self, parent)
         self.init_ui()
 
     def init_ui(self):
@@ -34,13 +20,13 @@ class PanelTestCaseChk(wx.Panel):
         """
         # jira 版本信息
         self.label_ver = wx.StaticText(self, -1, label=u'版本号', pos=(10, 10))
-        self.in_ver = wx.TextCtrl(self, -1, size=(300, -1), pos=(100, 10))
+        self.in_ver = wx.TextCtrl(self, -1, size=(400, -1), pos=(100, 10))
 
         # 用例目录,提供路径选择框
         self.label_case_path = wx.StaticText(self, -1, label=u'用例目录', pos=(10, 50))
-        self.in_path = wx.TextCtrl(self, -1, size=(300, -1), pos=(100, 50))
+        self.in_path = wx.TextCtrl(self, -1, size=(400, -1), pos=(100, 50))
         # 文件夹选择框按钮
-        self.btn_select_dir = wx.Button(self, -1, size=(20, -1), label=u'..', pos=(400, 50))
+        self.btn_select_dir = wx.Button(self, -1, size=(20, -1), label=u'..', pos=(500, 50))
         self.Bind(wx.EVT_BUTTON, self.on_btn_select_dir, self.btn_select_dir)
 
         # 测试用例检查按钮
@@ -171,38 +157,14 @@ class PanelTestCaseChk(wx.Panel):
         version = self.in_ver.GetValue()
         case_path = self.in_path.GetValue()
         if (chk_flag & 0b10) == 2 and not os.path.isdir(case_path) :
-            dlg = wx.MessageDialog(self, u'用例目录无效', style = wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            return
+            # dlg = wx.MessageDialog(self, u'用例目录无效', style = wx.OK | wx.ICON_ERROR)
+            # dlg.ShowModal()
+            raise Exception('用例目录无效')
         if not (je.version_exist(version) and (chk_flag & 0b01) == 1):
-            dlg = wx.MessageDialog(self, u'版本[%s]在jira中不存在' % version, style = wx.OK | wx.ICON_ERROR)
-            dlg.ShowModal()
-            return
+            # dlg = wx.MessageDialog(self, u'版本[%s]在jira中不存在' % version, style = wx.OK | wx.ICON_ERROR)
+            # dlg.ShowModal()
+            raise Exception('版本[%s]在jira中不存在' % version)
         return version, case_path
-
-    def _disable_btn(self, btn_obj=()):
-        """
-        把页面按钮置灰
-        :param btn_obj:
-        :return:
-        """
-        btn_obj = self.btns if btn_obj == () else btn_obj
-        for b in btn_obj:
-            if not isinstance(b, wx.Button):
-                continue
-            b.Disable()
-
-    def _enable_btn(self, btn_obj=()):
-        """
-        把页面按钮置位Enable
-        :param btn_obj:
-        :return:
-        """
-        btn_obj = self.btns if btn_obj == () else btn_obj
-        for b in btn_obj:
-            if not isinstance(b, wx.Button):
-                continue
-            b.Enable()
 
     def roll_back(self):
         """

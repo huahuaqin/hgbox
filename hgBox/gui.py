@@ -11,6 +11,7 @@ if __name__ == '__main__':
     frame = wx.Frame(None, title=u"测试三部", size=(600, 600), pos=pos, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
     nb = wx.Notebook(frame)
     nb.AddPage(PanelTestCaseChk(nb), u'用例检查')
+    nb.AddPage(PanelRF(nb), u'RF用例相关')
     nb.AddPage(PanelSetting(nb), u'参数设置')
     frame.Show()
     app.MainLoop()

@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from jira import JIRA
-from jira.exceptions import JIRAError
 import os
-import configparser
 import xlrd
 from execptions import JiraException
 from setting import Setting
@@ -11,7 +9,7 @@ from setting import Setting
 
 def wrap_exception(func):
     """
-    装饰器，异常时弹出框显示异常信息
+    装饰器，异常时统一由JiraException 类处理
     :param func:
     :return:
     """
@@ -66,7 +64,7 @@ class JiraExtend(object):
                             if subissue.fields.assignee.key not in testers:
                                 testers = '%s %s' % (testers, subissue.fields.assignee.key)
                 result = '%s%s %s\r\n' % (result, uncoverjira[0], testers)
-                print result
+                # print result
         else:
             result = u'测试用例已全部覆盖jira需求'
         return result
@@ -185,6 +183,7 @@ class JiraExtend(object):
 
 
 if __name__ == '__main__':
+    '''
     jre = JiraExtend()
     jre.sync_sub_pjoect()
-
+    '''
