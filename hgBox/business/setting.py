@@ -9,6 +9,10 @@ ATTR = {'JIRA_INFO': {'jira_server': 'http://192.168.0.221:8080',
                       'jira_user': '',
                       'jira_pwd': '',
                       'jira_prj': 'OTC'},
+        'FTP_INFO':{'ftp_server':'192.168.0.106',
+                    'port':'21',
+                    'ftp_user':'qhg',
+                    'ftp_passwd':'huahuaqin'}
         }
 
 

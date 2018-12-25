@@ -7,6 +7,7 @@ from basepanel import BasePanel
 from business import *
 from lib.osextend import lst_all_file
 from lib import wrap_wx_msg_exception as wrap_exception
+import re
 
 
 class PanelRF(BasePanel):
@@ -46,9 +47,10 @@ class PanelRF(BasePanel):
         self.Bind(wx.EVT_BUTTON, self.on_btn_replace, self.btn_replace)
 
         # 树形结构
-        self.tree,self.img_list = self._init_tree(self, pos=(10, 130), size=(570, 400), )
+        self.tree= self._init_tree(self, pos=(10, 130), size=(570, 400), )
+        self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED,self.on_tree_item_double_click)
 
-        self.btns = [self.btn_search,self.btn_replace]
+        self.btns = [self.btn_search,self.btn_replace,self.btn_select_dir]
 
     def on_btn_search(self, event):
         """
@@ -61,6 +63,27 @@ class PanelRF(BasePanel):
         # 使用线程调用(非阻塞)，避免处理时间过长导致界面卡死
         t = Thread(target=self._search_or_replace, args=())
         t.start()
+
+    def on_tree_item_double_click(self, event):
+        """
+        CTRL_TREE 元素双击事件
+        :param event:
+        :return:
+        """
+        select_item = self.tree.GetSelection()
+        path = self._get_path_from_tree_item(select_item)
+        if os.path.isfile(path):
+            try:
+                os.startfile(path)
+            except:
+                raise Exception('打开失败！')
+        elif os.path.isdir(path):
+            pass
+        else:
+            try:
+                os.system(path)
+            except:
+                raise Exception('打开失败！')
 
     def on_btn_replace(self, event):
         """
@@ -89,7 +112,7 @@ class PanelRF(BasePanel):
         root = self.tree.GetRootItem()
         if root:
             self.tree.Delete(root)
-        root = self.tree.AddRoot(case_path, image=0)
+        root = self.tree.AddRoot(case_path, image=self.folder_icon)
         tree_node = rf.lst_tree_node(case_path)
 
         if flag:
@@ -97,9 +120,9 @@ class PanelRF(BasePanel):
                 raise Exception('请输入要查找的内容!')
             if not replace_context.strip(' '):
                 raise Exception('请输入要替换的内容!')
-            self._upd_tree(root, tree_node,case_path,search_contxt,True)
             for f in lst_all_file(case_path):
                 rf.search_or_replace_content(f,search_contxt,replace_context)
+            self._upd_tree(root, tree_node,case_path,search_contxt)
         else:
             if search_contxt.strip(' '):
                 self._upd_tree(root, tree_node,case_path,search_contxt)
@@ -115,8 +138,12 @@ class PanelRF(BasePanel):
         """
         dlg = wx.DirDialog(self, u"选择文件夹", style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
-            self.in_path.SetValue(dlg.GetPath())
+            case_path =dlg.GetPath()
+            self.in_path.SetValue(case_path)
         dlg.Destroy()
+        self._disable_btn()
+        t = Thread(target=self._search_or_replace, args=())
+        t.start()
 
     def _init_tree(self, parent, *args, **kwargs):
         """
@@ -128,11 +155,11 @@ class PanelRF(BasePanel):
         tree = wx.TreeCtrl(parent, *args, **kwargs)
         # 通过wx.ImageList()创建一个图像列表imglist并保存在树中
         img_list = wx.ImageList(16, 16, True, 2)
-        img_list.Add(wx.ArtProvider.GetBitmap(wx.ART_FOLDER, size=wx.Size(16, 16)))
-        img_list.Add(wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE, size=(16, 16)))
+        self.folder_icon = img_list.Add(wx.ArtProvider.GetBitmap(wx.ART_FOLDER, size=wx.Size(16, 16)))
+        self.file_icon = img_list.Add(wx.ArtProvider.GetBitmap(wx.ART_NORMAL_FILE, size=(16, 16)))
         tree.AssignImageList(img_list)
         # root = tree.AddRoot(root_name, image=0)
-        return tree, img_list
+        return tree
 
     def _upd_tree(self, node, item_list,main_path=None,search='',flag=False):
         """
@@ -151,7 +178,7 @@ class PanelRF(BasePanel):
             if isinstance(item, dict):
                 for key, value in item.items():
                     node_name=key.split('\\')[-1]
-                    child_node = self.tree.AppendItem(node, node_name, 0)
+                    child_node = self.tree.AppendItem(node, node_name, self.folder_icon)
                     if isinstance(value, (list, tuple)):
                         cnt =self._upd_tree(child_node, value,key,search,flag)
                         total_cnt+=cnt
@@ -160,10 +187,27 @@ class PanelRF(BasePanel):
                     if search !='':
                         path = os.path.join(main_path,item)
                         cnt = RFExtend.search_or_replace_content(path,search,)
-                        item = '%s  (%s)' % (item,cnt)
+                        item = '%s---(%s)' % (item,cnt)
                         total_cnt+=cnt
-                self.tree.AppendItem(node, item, 1)
+                self.tree.AppendItem(node, item, self.file_icon)
         if search !='':
-            node_name='%s  (%s)' % (self.tree.GetItemText(node),total_cnt)
-            self.tree.SetItemText(node,node_name)
+            node_name='%s---(%s)' % (self.tree.GetItemText(node),total_cnt)
+            self.tree.SetItemText(node, node_name)
         return total_cnt
+
+    def _get_path_from_tree_item(self, item):
+        """
+        获取item 的实际文件/文件夹 路径
+        :param item:
+        :return:
+        """
+        if not isinstance(item, wx.TreeItemId):
+            raise Exception('入参不是wx.TreeItemId的实例')
+        parent_node = self.tree.GetItemParent(item)
+        # path = self.tree.GetItemText(item)
+        path = re.sub(r'(---\(\d+\))$', '', self.tree.GetItemText(item))
+        if parent_node:
+            parent_path = self._get_path_from_tree_item(parent_node)
+            path = '%s\\%s' % (parent_path, path)
+        return path
+

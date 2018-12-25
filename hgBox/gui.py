@@ -12,6 +12,8 @@ if __name__ == '__main__':
     nb = wx.Notebook(frame)
     nb.AddPage(PanelTestCaseChk(nb), u'用例检查')
     nb.AddPage(PanelRF(nb), u'RF用例相关')
+    nb.AddPage(PanelEnv(nb), u'环境管理')
     nb.AddPage(PanelSetting(nb), u'参数设置')
+
     frame.Show()
     app.MainLoop()
